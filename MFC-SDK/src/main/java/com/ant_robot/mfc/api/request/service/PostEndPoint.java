@@ -2,12 +2,11 @@ package com.ant_robot.mfc.api.request.service;
 
 import com.ant_robot.mfc.api.request.MFCRequest;
 
-import retrofit.Endpoint;
 
 /**
  * Created by climbatize on 06/04/15.
  */
-public class PostEndPoint implements Endpoint {
+public class PostEndPoint /*implements Endpoint*/ {
 
     public enum MODE {
         LOGIN(0), ITEM(1);
@@ -57,12 +56,12 @@ public class PostEndPoint implements Endpoint {
 
     private MODE mode;
 
-    @Override
+    //@Override
     public String getUrl() {
         return this.mode.toString();
     }
 
-    @Override
+    //@Override
     public String getName() {
         return this.mode.getName();
     }

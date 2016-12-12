@@ -10,15 +10,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 
-import retrofit.converter.ConversionException;
-import retrofit.converter.Converter;
-import retrofit.mime.TypedInput;
-import retrofit.mime.TypedOutput;
+import retrofit2.Converter;
 
 /**
 * Created by Climbatize on 23/03/2015.
 */
-public class DynamicJsonConverter implements Converter {
+public class DynamicJsonConverter extends Converter.Factory {
 
     @Override
     public Object fromBody(TypedInput typedInput, Type type) throws ConversionException {
@@ -61,4 +58,5 @@ public class DynamicJsonConverter implements Converter {
         }
         return out.toString();
     }
+
 }

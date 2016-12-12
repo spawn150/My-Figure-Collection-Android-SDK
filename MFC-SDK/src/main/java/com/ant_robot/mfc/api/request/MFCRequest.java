@@ -14,7 +14,6 @@ import com.ant_robot.mfc.api.request.service.ManageItemService;
 import com.ant_robot.mfc.api.request.service.PostEndPoint;
 import com.ant_robot.mfc.api.request.service.SearchService;
 import com.ant_robot.mfc.api.request.service.UserService;
-import com.squareup.okhttp.OkHttpClient;
 
 import java.net.CookieManager;
 import java.net.CookiePolicy;
@@ -25,11 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.OkClient;
-import retrofit.client.Response;
+import okhttp3.OkHttpClient;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
 
 
 public enum MFCRequest {
@@ -37,15 +34,15 @@ public enum MFCRequest {
     public static final String ROOT_URL = "http://myfigurecollection.net/api.php";
     public static final String LOGIN = "https://secure.myfigurecollection.net/signs.php";
     public static final String ITEM = "http://myfigurecollection.net/items.php";
-    private final RestAdapter restAdapter;
-    private final RestAdapter connectAdapter;
-    private final RestAdapter galleryAdapter;
+    private final Retrofit restAdapter;
+    private final Retrofit connectAdapter;
+    private final Retrofit galleryAdapter;
 
     private final OkHttpClient client;
     private final DynamicJsonConverter standartConverter;
     private final GalleryJsonConverter galleryConverter;
     private List<HttpCookie> cookies;
-    private final PostEndPoint poe;
+    //private final PostEndPoint poe;
 
     public enum MANAGECOLLECTION {
         NOTCONNECTED,
@@ -127,18 +124,25 @@ public enum MFCRequest {
         client.setReadTimeout(60, TimeUnit.SECONDS);
         client.setFollowRedirects(false);
 
-        poe = new PostEndPoint(PostEndPoint.MODE.LOGIN);
+        //poe = new PostEndPoint(PostEndPoint.MODE.LOGIN);
 
 
         standartConverter = new DynamicJsonConverter();
         galleryConverter = new GalleryJsonConverter();
 
+        restAdapter = new Retrofit.Builder()
+                .baseUrl(ROOT_URL)
+                .client(client)
+                .build();
+
+        /*
         restAdapter = new RestAdapter.Builder()
                 .setClient(new OkClient(client))
                 .setConverter(standartConverter)
                 .setEndpoint(ROOT_URL)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
+                */
 
         galleryAdapter = new RestAdapter.Builder()
                 .setClient(new OkClient(client))
@@ -149,17 +153,17 @@ public enum MFCRequest {
 
         connectAdapter = new RestAdapter.Builder()
                 .setClient(new OkClient(client))
-                .setEndpoint(poe)
+                //.setEndpoint(poe)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
 
     }
 
-    public RestAdapter getRestAdapter() {
+    public Retrofit getRestAdapter() {
         return restAdapter;
     }
 
-    public RestAdapter getConnectAdapter() {
+    public Retrofit getConnectAdapter() {
         return connectAdapter;
     }
 
@@ -269,7 +273,7 @@ public enum MFCRequest {
         if (checkCookies(context)) {
 
 
-            poe.setMode(PostEndPoint.MODE.ITEM);
+            //poe.setMode(PostEndPoint.MODE.ITEM);
             connectAdapter.create(ManageItemService.class).orderItem(figureId, "collect", STATUS.ORDERED.toInt(), number, price, where, method.toInt(), trackingNumber, boughtDate, shippingDate, substatus.toInt(), previousStatus.toInt(), 0, new Callback<AlterItem>() {
                 @Override
                 public void success(AlterItem alterItem, Response response) {
@@ -291,7 +295,7 @@ public enum MFCRequest {
         if (checkCookies(context)) {
 
 
-            poe.setMode(PostEndPoint.MODE.ITEM);
+            //poe.setMode(PostEndPoint.MODE.ITEM);
             connectAdapter.create(ManageItemService.class).ownItem(figureId, "collect", STATUS.OWNED.toInt(), number, score, odate, price, where, method.toInt(), trackingNumber, boughtDate, shippingDate, substatus.toInt(), previousStatus.toInt(), 0, new Callback<AlterItem>() {
                 @Override
                 public void success(AlterItem alterItem, Response response) {
@@ -333,7 +337,7 @@ public enum MFCRequest {
         if (checkCookies(context)) {
 
 
-            poe.setMode(PostEndPoint.MODE.ITEM);
+            //poe.setMode(PostEndPoint.MODE.ITEM);
             connectAdapter.create(ManageItemService.class).deleteItem(figureId, "collect", STATUS.DELETE.toInt(), previousStatus.toInt(), 0, new Callback<AlterItem>() {
                 @Override
                 public void success(AlterItem alterItem, Response response) {

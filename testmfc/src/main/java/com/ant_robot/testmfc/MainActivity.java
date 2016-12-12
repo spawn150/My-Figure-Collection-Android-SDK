@@ -1,7 +1,7 @@
 package com.ant_robot.testmfc;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,9 +9,10 @@ import android.view.MenuItem;
 import com.ant_robot.mfc.api.pojo.PictureGallery;
 import com.ant_robot.mfc.api.request.MFCRequest;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,15 +25,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void testGallery() {
-        MFCRequest.INSTANCE.getGalleryService().getGalleryForUser("Climbatize", 1, new Callback<PictureGallery>() {
+
+        Call<PictureGallery> call = MFCRequest.INSTANCE.getGalleryService().getGalleryForUser("Climbatize", 1);
+        call.enqueue(new Callback<PictureGallery>() {
             @Override
-            public void success(PictureGallery pictureGallery, Response response) {
-                Log.d("MFC SDK", pictureGallery.getName());
+            public void onResponse(Call<PictureGallery> call, Response<PictureGallery> response) {
+                Log.d("MFC SDK", response.body().getName());
             }
 
             @Override
-            public void failure(RetrofitError error) {
-                Log.e("MFC SDK", error.getMessage());
+            public void onFailure(Call<PictureGallery> call, Throwable t) {
+                Log.e("MFC SDK", t.getMessage());
             }
         });
     }

@@ -13,7 +13,7 @@ ext {
     siteUrl = 'http://myfigurecollection.net'
     gitUrl = 'https://github.com/Ant-Robot/My-Figure-Collection-Android-SDK.git'
 
-    libraryVersion = '0.0.4.4'
+    libraryVersion = '0.0.4.5'
 
     developerId = 'climbatize'
     developerName = 'Climbatize'
@@ -27,12 +27,12 @@ ext {
 
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23"
+    compileSdkVersion = 25
+    buildToolsVersion = '25.0.0'
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 23
+        minSdkVersion 16
+        targetSdkVersion 25
         versionCode 1
         versionName "Reborn"
     }
@@ -51,11 +51,11 @@ android {
 
 
 dependencies {
-    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.google.code.gson:gson:2.4'
     compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.3.0'
-    compile 'com.squareup.okhttp:okhttp:2.3.0'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.4.2'
+    compile 'com.squareup.okhttp3:okhttp:3.4.2'
     compile 'io.reactivex:rxjava:1.0.8'
     compile 'com.google.guava:guava:18.0'
 }

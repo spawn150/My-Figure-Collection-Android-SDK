@@ -1,11 +1,11 @@
 package com.ant_robot.mfc.api.request.service;
 
-import retrofit.Callback;
-import retrofit.client.Response;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
-import retrofit.http.Headers;
-import retrofit.http.POST;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import rx.Observable;
 
 /**
@@ -21,8 +21,8 @@ public interface ConnexionService {
             "Connection: keep-alive"
     }
     )
-    @POST("/?mode=in&ln=en")
-    void connectUser(@Field("username") String name, @Field("password") String pass, @Field("set_cookie") int cookie, @Field("commit") String commit, @Field("location") String location, Callback<Response> callback);
+    @POST("?mode=in&ln=en")
+    Call<Response> connectUser(@Field("username") String name, @Field("password") String pass, @Field("set_cookie") int cookie, @Field("commit") String commit, @Field("location") String location);
 
     @FormUrlEncoded
     @Headers({
@@ -33,18 +33,6 @@ public interface ConnexionService {
             "Connection: keep-alive"
     }
     )
-    @POST("/?mode=in&ln=en")
-    Response connectUserSync(@Field("username") String name, @Field("password") String pass, @Field("set_cookie") int cookie, @Field("commit") String commit, @Field("location") String location);
-
-    @FormUrlEncoded
-    @Headers({
-            "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-            "User-Agent: MFC Android app",
-            "Cache-Control: max-age=0",
-            "Accept-Language: fr,fr-FR;q=0.8,en;q=0.6,en-US;q=0.4,es;q=0.2,ja;q=0.2",
-            "Connection: keep-alive"
-    }
-    )
-    @POST("/?mode=in&ln=en")
-    Observable<Response> connectUser(@Field("username") String name, @Field("password") String pass, @Field("set_cookie") int cookie, @Field("commit") String commit, @Field("location") String location);
+    @POST("?mode=in&ln=en")
+    Observable<Response> connectUserRx(@Field("username") String name, @Field("password") String pass, @Field("set_cookie") int cookie, @Field("commit") String commit, @Field("location") String location);
 }
