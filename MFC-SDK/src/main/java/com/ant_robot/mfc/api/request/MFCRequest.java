@@ -24,8 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
+import retrofit2.Call;
+
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 
@@ -197,47 +201,28 @@ public enum MFCRequest {
      * @param context  an application context for the cookie store
      * @param callback calls success true if connection succeed, calls success false if everything went ok but connexion failed, calls failure otherwise
      */
-    public void connect(String username, String password, final Context context, final Callback<Boolean> callback) {
-        client.setCookieHandler(new CookieManager(
+    public void connect(String username, String password, final Context context, final MFCCallback<Boolean> callback) {
+
+        //TODO Manca da aggiornare il client!
+        client.newBuilder().cookieJar(new JavaNetCookieJar(new CookieManager(
                 new PersistentCookieStore(context),
-                CookiePolicy.ACCEPT_ALL));
+                CookiePolicy.ACCEPT_ALL))).build();
 
-        connectAdapter.create(ConnexionService.class).connectUser(username, password, 1, "signin", "http://myfigurecollection.net/", new Callback<Response>() {
+        Call<Response> responseCall = connectAdapter.create(ConnexionService.class).connectUser(username, password, 1, "signin", "http://myfigurecollection.net/");
+        responseCall.enqueue(new Callback<Response>() {
             @Override
-            public void success(Response response, Response response2) {
-
-                //Request went well, but MFC should return a HTTP 302 status if connection succeeded
-                callback.success(checkCookies(context), response);
+            public void onResponse(Call<Response> call, Response<Response> response) {
+                if (response.isSuccessful() || response.code() == 302) {
+                    //Request went well, but MFC should return a HTTP 302 status if connection succeeded
+                    callback.success(checkCookies(context));
+                } else {
+                    callback.success(false);
+                }
             }
 
             @Override
-            public void failure(RetrofitError error) {
-
-                switch (error.getKind()) {
-                    case HTTP:
-                        switch (error.getResponse().getStatus()) {
-                            //if we have a HTTP 302 redirection with an empty body that means we logged in
-                            case 302:
-                                callback.success(checkCookies(context), error.getResponse());
-                                break;
-
-                            default:
-                                callback.failure(error);
-                                break;
-                        }
-                        break;
-
-                    case NETWORK:
-                        callback.failure(error);
-                        break;
-
-                    case CONVERSION:
-                    case UNEXPECTED:
-                        throw error;
-
-                    default:
-                        throw new AssertionError("Unknown error kind: " + error.getKind());
-                }
+            public void onFailure(Call<Response> call, Throwable t) {
+                callback.error(t);
             }
         });
     }
@@ -355,5 +340,11 @@ public enum MFCRequest {
         }
     }
 
+
+    public interface MFCCallback<T> {
+        void success(T t);
+
+        void error(Throwable throwable);
+    }
 
 }
