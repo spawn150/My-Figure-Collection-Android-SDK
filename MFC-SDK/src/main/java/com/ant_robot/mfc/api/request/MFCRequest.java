@@ -11,7 +11,6 @@ import com.ant_robot.mfc.api.request.service.ConnexionService;
 import com.ant_robot.mfc.api.request.service.GalleryService;
 import com.ant_robot.mfc.api.request.service.ItemDate;
 import com.ant_robot.mfc.api.request.service.ManageItemService;
-import com.ant_robot.mfc.api.request.service.PostEndPoint;
 import com.ant_robot.mfc.api.request.service.SearchService;
 import com.ant_robot.mfc.api.request.service.UserService;
 
@@ -27,7 +26,6 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
-
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -233,9 +231,9 @@ public enum MFCRequest {
      * @param context  an application context for the cookie store
      * @param callback calls success true if removal succeed, calls success false if something went wrong
      */
-    public void disconnect(final Context context, final Callback<Boolean> callback) {
+    public void disconnect(final Context context, final MFCCallback<Boolean> callback) {
         PersistentCookieStore persistentCookieStore = new PersistentCookieStore(context);
-        callback.success(persistentCookieStore.removeAll(), null);
+        callback.success(persistentCookieStore.removeAll());
     }
 
     public boolean checkCookies(Context context) {
@@ -255,88 +253,90 @@ public enum MFCRequest {
         return false;
     }
 
-    public void orderFigure(String figureId, int number, double price, String where, SHIPPING method, String trackingNumber, ItemDate boughtDate, ItemDate shippingDate, SUBSTATUS substatus, STATUS previousStatus, Context context, final Callback<MANAGECOLLECTION> callback) {
+    public void orderFigure(String figureId, int number, double price, String where, SHIPPING method, String trackingNumber, ItemDate boughtDate, ItemDate shippingDate, SUBSTATUS substatus, STATUS previousStatus, Context context, final MFCCallback<MANAGECOLLECTION> callback) {
         if (checkCookies(context)) {
 
-
+            //TODO Risolvere questo problema
             //poe.setMode(PostEndPoint.MODE.ITEM);
-            connectAdapter.create(ManageItemService.class).orderItem(figureId, "collect", STATUS.ORDERED.toInt(), number, price, where, method.toInt(), trackingNumber, boughtDate, shippingDate, substatus.toInt(), previousStatus.toInt(), 0, new Callback<AlterItem>() {
+            Call<AlterItem> alterItemCall = connectAdapter.create(ManageItemService.class).orderItem(figureId, "collect", STATUS.ORDERED.toInt(), number, price, where, method.toInt(), trackingNumber, boughtDate, shippingDate, substatus.toInt(), previousStatus.toInt(), 0);
+            alterItemCall.enqueue(new Callback<AlterItem>() {
                 @Override
-                public void success(AlterItem alterItem, Response response) {
-                    callback.success(MANAGECOLLECTION.OK, response);
+                public void onResponse(Call<AlterItem> call, Response<AlterItem> response) {
+                    callback.success(MANAGECOLLECTION.OK);
                 }
 
                 @Override
-                public void failure(RetrofitError error) {
-                    callback.failure(error);
+                public void onFailure(Call<AlterItem> call, Throwable t) {
+                    callback.error(t);
                 }
             });
-
         } else {
-            callback.success(MANAGECOLLECTION.NOTCONNECTED, null);
+            callback.success(MANAGECOLLECTION.NOTCONNECTED);
         }
     }
 
-    public void ownFigure(String figureId, int number, ItemDate odate, int score, double price, String where, SHIPPING method, String trackingNumber, ItemDate boughtDate, ItemDate shippingDate, SUBSTATUS substatus, STATUS previousStatus, Context context, final Callback<MANAGECOLLECTION> callback) {
+    public void ownFigure(String figureId, int number, ItemDate odate, int score, double price, String where, SHIPPING method, String trackingNumber, ItemDate boughtDate, ItemDate shippingDate, SUBSTATUS substatus, STATUS previousStatus, Context context, final MFCCallback<MANAGECOLLECTION> callback) {
         if (checkCookies(context)) {
 
-
+            //TODO Risolvere questo problema
             //poe.setMode(PostEndPoint.MODE.ITEM);
-            connectAdapter.create(ManageItemService.class).ownItem(figureId, "collect", STATUS.OWNED.toInt(), number, score, odate, price, where, method.toInt(), trackingNumber, boughtDate, shippingDate, substatus.toInt(), previousStatus.toInt(), 0, new Callback<AlterItem>() {
+            Call<AlterItem> alterItemCall = connectAdapter.create(ManageItemService.class).ownItem(figureId, "collect", STATUS.OWNED.toInt(), number, score, odate, price, where, method.toInt(), trackingNumber, boughtDate, shippingDate, substatus.toInt(), previousStatus.toInt(), 0);
+            alterItemCall.enqueue(new Callback<AlterItem>() {
                 @Override
-                public void success(AlterItem alterItem, Response response) {
-                    callback.success(MANAGECOLLECTION.OK, response);
+                public void onResponse(Call<AlterItem> call, Response<AlterItem> response) {
+                    callback.success(MANAGECOLLECTION.OK);
                 }
 
                 @Override
-                public void failure(RetrofitError error) {
-                    callback.failure(error);
+                public void onFailure(Call<AlterItem> call, Throwable t) {
+                    callback.error(t);
                 }
             });
         } else {
-            callback.success(MANAGECOLLECTION.NOTCONNECTED, null);
+            callback.success(MANAGECOLLECTION.NOTCONNECTED);
         }
     }
 
-    public void wishFigure(String figureId, int wishability, STATUS previousStatus, Context context, final Callback<MANAGECOLLECTION> callback) {
+    public void wishFigure(String figureId, int wishability, STATUS previousStatus, Context context, final MFCCallback<MANAGECOLLECTION> callback) {
         if (checkCookies(context)) {
 
-
-            poe.setMode(PostEndPoint.MODE.ITEM);
-            connectAdapter.create(ManageItemService.class).wishItem(figureId, "collect", STATUS.WISHED.toInt(), wishability, previousStatus.toInt(), 0, new Callback<AlterItem>() {
+            //TODO Risolvere questo problema
+            //poe.setMode(PostEndPoint.MODE.ITEM);
+            Call<AlterItem> alterItemCall = connectAdapter.create(ManageItemService.class).wishItem(figureId, "collect", STATUS.WISHED.toInt(), wishability, previousStatus.toInt(), 0);
+            alterItemCall.enqueue(new Callback<AlterItem>() {
                 @Override
-                public void success(AlterItem alterItem, Response response) {
-                    callback.success(MANAGECOLLECTION.OK, response);
+                public void onResponse(Call<AlterItem> call, Response<AlterItem> response) {
+                    callback.success(MANAGECOLLECTION.OK);
                 }
 
                 @Override
-                public void failure(RetrofitError error) {
-                    callback.failure(error);
+                public void onFailure(Call<AlterItem> call, Throwable t) {
+                    callback.error(t);
                 }
             });
         } else {
-            callback.success(MANAGECOLLECTION.NOTCONNECTED, null);
+            callback.success(MANAGECOLLECTION.NOTCONNECTED);
         }
     }
 
-    public void deleteFigure(String figureId, STATUS previousStatus, Context context, final Callback<MANAGECOLLECTION> callback) {
+    public void deleteFigure(String figureId, STATUS previousStatus, Context context, final MFCCallback<MANAGECOLLECTION> callback) {
         if (checkCookies(context)) {
-
-
+            //TODO Risolvere questo problema
             //poe.setMode(PostEndPoint.MODE.ITEM);
-            connectAdapter.create(ManageItemService.class).deleteItem(figureId, "collect", STATUS.DELETE.toInt(), previousStatus.toInt(), 0, new Callback<AlterItem>() {
+            Call<AlterItem> alterItemCall = connectAdapter.create(ManageItemService.class).deleteItem(figureId, "collect", STATUS.DELETE.toInt(), previousStatus.toInt(), 0);
+            alterItemCall.enqueue(new Callback<AlterItem>() {
                 @Override
-                public void success(AlterItem alterItem, Response response) {
-                    callback.success(MANAGECOLLECTION.OK, response);
+                public void onResponse(Call<AlterItem> call, Response<AlterItem> response) {
+                    callback.success(MANAGECOLLECTION.OK);
                 }
 
                 @Override
-                public void failure(RetrofitError error) {
-                    callback.failure(error);
+                public void onFailure(Call<AlterItem> call, Throwable t) {
+                    callback.error(t);
                 }
             });
         } else {
-            callback.success(MANAGECOLLECTION.NOTCONNECTED, null);
+            callback.success(MANAGECOLLECTION.NOTCONNECTED);
         }
     }
 
@@ -346,5 +346,4 @@ public enum MFCRequest {
 
         void error(Throwable throwable);
     }
-
 }
