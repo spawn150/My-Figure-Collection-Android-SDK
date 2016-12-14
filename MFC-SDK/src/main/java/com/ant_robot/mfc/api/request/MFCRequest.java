@@ -119,20 +119,21 @@ public enum MFCRequest {
 
 
     private MFCRequest() {
-        client = new OkHttpClient();
-        client.setConnectTimeout(60, TimeUnit.SECONDS);
-        client.setReadTimeout(60, TimeUnit.SECONDS);
-        client.setFollowRedirects(false);
+
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .followRedirects(false);
+        client = builder.build();
 
         //poe = new PostEndPoint(PostEndPoint.MODE.LOGIN);
-
 
         standartConverter = new DynamicJsonConverter();
         galleryConverter = new GalleryJsonConverter();
 
         restAdapter = new Retrofit.Builder()
                 .baseUrl(ROOT_URL)
-                .client(client)
+                .client(client.newBuilder().build())
                 .build();
 
         /*
@@ -144,17 +145,17 @@ public enum MFCRequest {
                 .build();
                 */
 
-        galleryAdapter = new RestAdapter.Builder()
-                .setClient(new OkClient(client))
-                .setConverter(galleryConverter)
-                .setEndpoint(ROOT_URL)
-                .setLogLevel(RestAdapter.LogLevel.FULL)
+        galleryAdapter = new Retrofit.Builder()
+                .baseUrl(ROOT_URL)
+                .client(client.newBuilder().build())
+                //.setConverter(galleryConverter)
+                //.setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
 
-        connectAdapter = new RestAdapter.Builder()
-                .setClient(new OkClient(client))
+        connectAdapter = new Retrofit.Builder()
+                .client(client.newBuilder().build())
                 //.setEndpoint(poe)
-                .setLogLevel(RestAdapter.LogLevel.FULL)
+                //.setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
 
     }
