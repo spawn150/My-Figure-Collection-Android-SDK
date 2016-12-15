@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.ant_robot.mfc.api.pojo.AlterItem;
 import com.ant_robot.mfc.api.request.cookie.PersistentCookieStore;
-import com.ant_robot.mfc.api.request.json.DynamicJsonConverter;
-import com.ant_robot.mfc.api.request.json.GalleryJsonConverter;
+import com.ant_robot.mfc.api.request.json.DynamicJsonConverterFactory;
+import com.ant_robot.mfc.api.request.json.GalleryJsonConverterFactory;
 import com.ant_robot.mfc.api.request.service.CollectionService;
 import com.ant_robot.mfc.api.request.service.ConnexionService;
 import com.ant_robot.mfc.api.request.service.GalleryService;
@@ -41,8 +41,8 @@ public enum MFCRequest {
     private final Retrofit galleryAdapter;
 
     private final OkHttpClient client;
-    private final DynamicJsonConverter standartConverter;
-    private final GalleryJsonConverter galleryConverter;
+    private final DynamicJsonConverterFactory standardConverterFactory;
+    private final GalleryJsonConverterFactory galleryConverterFactory;
     private List<HttpCookie> cookies;
     //private final PostEndPoint poe;
 
@@ -130,27 +130,28 @@ public enum MFCRequest {
 
         //poe = new PostEndPoint(PostEndPoint.MODE.LOGIN);
 
-        standartConverter = new DynamicJsonConverter();
-        galleryConverter = new GalleryJsonConverter();
+        standardConverterFactory = new DynamicJsonConverterFactory();
+        galleryConverterFactory = new GalleryJsonConverterFactory();
 
         restAdapter = new Retrofit.Builder()
+                .addConverterFactory(standardConverterFactory)
                 .baseUrl(ROOT_URL)
                 .client(client.newBuilder().build())
                 .build();
-
         /*
         restAdapter = new RestAdapter.Builder()
                 .setClient(new OkClient(client))
-                .setConverter(standartConverter)
+                .setConverter(standardConverterFactory)
                 .setEndpoint(ROOT_URL)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
                 */
 
         galleryAdapter = new Retrofit.Builder()
+                .addConverterFactory(galleryConverterFactory)
                 .baseUrl(ROOT_URL)
                 .client(client.newBuilder().build())
-                //.setConverter(galleryConverter)
+                //.setConverter(galleryConverterFactory)
                 //.setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
 
