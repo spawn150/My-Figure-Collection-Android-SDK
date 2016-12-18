@@ -24,94 +24,94 @@ public interface CollectionService {
     static final String ROOT_GOODS = "1";
     static final String ROOT_MEDIA = "2";
 
-    @GET("?mode=collection&type=json")
+    @GET("api.php?mode=collection&type=json")
     Observable<ItemList> getCollectionRx(@Query("username") String userName);
 
-    @GET("?mode=collection&type=json")
+    @GET("api.php?mode=collection&type=json")
     Call<ItemList> getCollection(@Query("username") String userName);
 
-    @GET("?mode=collection&type=json")
+    @GET("api.php?mode=collection&type=json")
     Observable<ItemList> getCollectionRx(@Query("username") String userName, @Query("page") int page);
 
-    @GET("?mode=collection&type=json")
+    @GET("api.php?mode=collection&type=json")
     Call<ItemList> getCollection(@Query("username") String userName, @Query("page") int page);
 
-    @GET("?mode=collection&type=json")
+    @GET("api.php?mode=collection&type=json")
     Observable<ItemList> getCollectionRx(@Query("username") String userName, @Query("page") int page, @Query("status") int status, @Query("root") int root);
 
-    @GET("?mode=collection&type=json")
+    @GET("api.php?mode=collection&type=json")
     Call<ItemList> getCollection(@Query("username") String userName, @Query("page") int page, @Query("status") int status, @Query("root") int root);
 
-    @GET("?mode=collection&type=json&status=" + STATUS_WISHED)
+    @GET("api.php?mode=collection&type=json&status=" + STATUS_WISHED)
     Observable<ItemList> getWishedRx(@Query("username") String userName);
 
-    @GET("?mode=collection&type=json&status=" + STATUS_WISHED)
+    @GET("api.php?mode=collection&type=json&status=" + STATUS_WISHED)
     Call<ItemList> getWished(@Query("username") String userName);
 
-    @GET("?mode=collection&type=json&status=" + STATUS_WISHED)
+    @GET("api.php?mode=collection&type=json&status=" + STATUS_WISHED)
     Observable<ItemList> getWishedRx(@Query("username") String userName, @Query("page") int page);
 
-    @GET("?mode=collection&type=json&status=" + STATUS_WISHED)
+    @GET("api.php?mode=collection&type=json&status=" + STATUS_WISHED)
     Call<ItemList> getWished(@Query("username") String userName, @Query("page") int page);
 
-    @GET("?mode=collection&type=json&status=" + STATUS_ORDERED)
+    @GET("api.php?mode=collection&type=json&status=" + STATUS_ORDERED)
     Observable<ItemList> getOrderedRx(@Query("username") String userName);
 
-    @GET("?mode=collection&type=json&status=" + STATUS_ORDERED)
+    @GET("api.php?mode=collection&type=json&status=" + STATUS_ORDERED)
     Call<ItemList> getOrdered(@Query("username") String userName);
 
-    @GET("?mode=collection&type=json&statu=s" + STATUS_ORDERED)
+    @GET("api.php?mode=collection&type=json&statu=s" + STATUS_ORDERED)
     Observable<ItemList> getOrderedRx(@Query("username") String userName, @Query("page") int page);
 
-    @GET("?mode=collection&type=json&status=" + STATUS_ORDERED)
+    @GET("api.php?mode=collection&type=json&status=" + STATUS_ORDERED)
     Call<ItemList> getOrdered(@Query("username") String userName, @Query("page") int page);
 
-    @GET("?mode=collection&type=json&status=" + STATUS_OWNED)
+    @GET("api.php?mode=collection&type=json&status=" + STATUS_OWNED)
     Observable<ItemList> getOwnedRx(@Query("username") String userName);
 
-    @GET("?mode=collection&type=json&status=" + STATUS_OWNED)
+    @GET("api.php?mode=collection&type=json&status=" + STATUS_OWNED)
     Call<ItemList> getOwned(@Query("username") String userName);
 
-    @GET("?mode=collection&type=json&status=" + STATUS_OWNED)
+    @GET("api.php?mode=collection&type=json&status=" + STATUS_OWNED)
     Observable<ItemList> getOwnedRx(@Query("username") String userName, @Query("page") int page);
 
-    @GET("?mode=collection&type=json&status=" + STATUS_OWNED)
+    @GET("api.php?mode=collection&type=json&status=" + STATUS_OWNED)
     Call<ItemList> getOwned(@Query("username") String userName, @Query("page") int page);
 
-    @GET("?mode=collection&type=json&root=" + ROOT_FIGURES)
+    @GET("api.php?mode=collection&type=json&root=" + ROOT_FIGURES)
     Observable<ItemList> getFiguresRx(@Query("username") String userName, @Query("page") int page);
 
-    @GET("?mode=collection&type=json&root=" + ROOT_FIGURES)
+    @GET("api.php?mode=collection&type=json&root=" + ROOT_FIGURES)
     Call<ItemList> getFigures(@Query("username") String userName, @Query("page") int page);
 
-    @GET("?mode=collection&type=json&root=" + ROOT_GOODS)
+    @GET("api.php?mode=collection&type=json&root=" + ROOT_GOODS)
     Observable<ItemList> getGoodsRx(@Query("username") String userName, @Query("page") byte page);
 
-    @GET("?mode=collection&type=json&root=" + ROOT_GOODS)
+    @GET("api.php?mode=collection&type=json&root=" + ROOT_GOODS)
     Call<ItemList> getGoods(@Query("username") String userName, @Query("page") byte page);
 
-    @GET("?mode=collection&type=json&root=" + ROOT_MEDIA)
+    @GET("api.php?mode=collection&type=json&root=" + ROOT_MEDIA)
     Observable<ItemList> getMediaRx(@Query("username") String userName, @Query("page") byte page);
 
-    @GET("?mode=collection&type=json&root=" + ROOT_MEDIA)
+    @GET("api.php?mode=collection&type=json&root=" + ROOT_MEDIA)
     Call<ItemList> getMedia(@Query("username") String userName, @Query("page") byte page);
 
-    @GET("?mode=collection&type=json&root=" + ROOT_FIGURES)
+    @GET("api.php?mode=collection&type=json&root=" + ROOT_FIGURES)
     Observable<ItemList> getFiguresRx(@Query("username") String userName, @Query("page") byte page, @Query("status") String status);
 
-    @GET("?mode=collection&type=json&root=" + ROOT_FIGURES)
+    @GET("api.php?mode=collection&type=json&root=" + ROOT_FIGURES)
     Call<ItemList> getFigures(@Query("username") String userName, @Query("page") byte page, @Query("status") String status);
 
-    @GET("?mode=collection&type=json&root=" + ROOT_GOODS)
+    @GET("api.php?mode=collection&type=json&root=" + ROOT_GOODS)
     Observable<ItemList> getGoodsRx(@Query("username") String userName, @Query("page") byte page, @Query("status") String status);
 
-    @GET("?mode=collection&type=json&root=" + ROOT_GOODS)
+    @GET("api.php?mode=collection&type=json&root=" + ROOT_GOODS)
     Call<ItemList> getGoods(@Query("username") String userName, @Query("page") byte page, @Query("status") String status);
 
-    @GET("?mode=collection&type=json&root=" + ROOT_MEDIA)
+    @GET("api.php?mode=collection&type=json&root=" + ROOT_MEDIA)
     Observable<ItemList> getMediaRx(@Query("username") String userName, @Query("page") byte page, @Query("status") String status);
 
-    @GET("?mode=collection&type=json&root=" + ROOT_MEDIA)
+    @GET("api.php?mode=collection&type=json&root=" + ROOT_MEDIA)
     Call<ItemList> getMedia(@Query("username") String userName, @Query("page") byte page, @Query("status") String status);
 
 }

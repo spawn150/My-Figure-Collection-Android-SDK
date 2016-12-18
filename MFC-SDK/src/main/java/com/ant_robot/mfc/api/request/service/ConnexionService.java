@@ -1,7 +1,7 @@
 package com.ant_robot.mfc.api.request.service;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Headers;
@@ -21,8 +21,8 @@ public interface ConnexionService {
             "Connection: keep-alive"
     }
     )
-    @POST("?mode=in&ln=en")
-    Call<Response> connectUser(@Field("username") String name, @Field("password") String pass, @Field("set_cookie") int cookie, @Field("commit") String commit, @Field("location") String location);
+    @POST("signs.php?mode=in&ln=en")
+    Call<ResponseBody> connectUser(@Field("username") String name, @Field("password") String pass, @Field("set_cookie") int cookie, @Field("commit") String commit, @Field("location") String location);
 
     @FormUrlEncoded
     @Headers({
@@ -33,6 +33,6 @@ public interface ConnexionService {
             "Connection: keep-alive"
     }
     )
-    @POST("?mode=in&ln=en")
-    Observable<Response> connectUserRx(@Field("username") String name, @Field("password") String pass, @Field("set_cookie") int cookie, @Field("commit") String commit, @Field("location") String location);
+    @POST("signs.php?mode=in&ln=en")
+    Observable<ResponseBody> connectUserRx(@Field("username") String name, @Field("password") String pass, @Field("set_cookie") int cookie, @Field("commit") String commit, @Field("location") String location);
 }
