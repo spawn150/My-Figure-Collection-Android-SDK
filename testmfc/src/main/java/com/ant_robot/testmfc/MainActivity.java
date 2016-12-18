@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.ant_robot.mfc.api.pojo.ItemList;
 import com.ant_robot.mfc.api.pojo.PictureGallery;
 import com.ant_robot.mfc.api.request.MFCRequest;
 
@@ -16,26 +17,98 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MFC SDK";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        testGallery();
+        MFCRequest.initialize(this);
+
+        //testConnect();
+        //testOrderedCollection();
+        //testOwnedCollection();
+        testWishedCollection();
+        //testGallery();
+    }
+
+    private void testConnect() {
+
+        MFCRequest.getInstance().connect("spawn150", "pul78lce", new MFCRequest.MFCCallback<Boolean>() {
+            @Override
+            public void success(Boolean aBoolean) {
+                Log.d(TAG, "Loging completed with " + (aBoolean ? "Success" : "Failure"));
+            }
+
+            @Override
+            public void error(Throwable throwable) {
+                Log.e(TAG, throwable.getMessage());
+            }
+        });
+
+    }
+
+    private void testOwnedCollection() {
+
+        Call<ItemList> call = MFCRequest.getInstance().getCollectionService().getOwned("spawn150");
+        call.enqueue(new Callback<ItemList>() {
+            @Override
+            public void onResponse(Call<ItemList> call, Response<ItemList> response) {
+                Log.d(TAG, "Items size: "+response.body().getCollection().getOwned().getNumItems());
+            }
+
+            @Override
+            public void onFailure(Call<ItemList> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
+    }
+
+    private void testOrderedCollection() {
+
+        Call<ItemList> call = MFCRequest.getInstance().getCollectionService().getOrdered("spawn150");
+        call.enqueue(new Callback<ItemList>() {
+            @Override
+            public void onResponse(Call<ItemList> call, Response<ItemList> response) {
+                Log.d(TAG, "Items size: "+response.body().getCollection().getOrdered().getNumItems());
+            }
+
+            @Override
+            public void onFailure(Call<ItemList> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
+    }
+
+    private void testWishedCollection() {
+
+        Call<ItemList> call = MFCRequest.getInstance().getCollectionService().getWished("spawn150");
+        call.enqueue(new Callback<ItemList>() {
+            @Override
+            public void onResponse(Call<ItemList> call, Response<ItemList> response) {
+                Log.d(TAG, "Items size: "+response.body().getCollection().getWished().getNumItems());
+            }
+
+            @Override
+            public void onFailure(Call<ItemList> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
     }
 
     private void testGallery() {
 
-        Call<PictureGallery> call = MFCRequest.INSTANCE.getGalleryService().getGalleryForUser("Climbatize", 1);
+        Call<PictureGallery> call = MFCRequest.getInstance().getGalleryService().getGalleryForUser("spawn150", 1);
         call.enqueue(new Callback<PictureGallery>() {
             @Override
             public void onResponse(Call<PictureGallery> call, Response<PictureGallery> response) {
-                Log.d("MFC SDK", response.body().getName());
+                Log.d(TAG, response.body().getName());
             }
 
             @Override
             public void onFailure(Call<PictureGallery> call, Throwable t) {
-                Log.e("MFC SDK", t.getMessage());
+                Log.e(TAG, t.getMessage());
             }
         });
     }
