@@ -35,8 +35,7 @@ import retrofit2.Retrofit;
 
 public class MFCRequest {
     private static MFCRequest INSTANCE;
-    private Context mContext;
-    public static final String ROOT_URL = "http://myfigurecollection.net/";
+    private static final String ROOT_URL = "http://myfigurecollection.net/";
     public static final String LOGIN = "https://secure.myfigurecollection.net/";
     public static final String ITEM = "http://myfigurecollection.net/items.php";
     private final Retrofit restAdapter;
@@ -44,18 +43,15 @@ public class MFCRequest {
     private final Retrofit galleryAdapter;
 
     private final OkHttpClient client;
-    private final DynamicJsonConverterFactory standardConverterFactory;
-    private final GalleryJsonConverterFactory galleryConverterFactory;
-    private List<HttpCookie> cookies;
     //private final PostEndPoint poe;
 
-    public enum MANAGECOLLECTION {
+    private enum MANAGECOLLECTION {
         NOTCONNECTED,
         OK,
         KO
     }
 
-    public enum STATUS {
+    private enum STATUS {
         WISHED(0), ORDERED(1), OWNED(2), DELETE(9);
 
         int method;
@@ -94,7 +90,7 @@ public class MFCRequest {
         }
     }
 
-    public enum SHIPPING {
+    private enum SHIPPING {
         NA(0), EMS(1), SAL(2), AIRMAIL(3), SURFACE(4), FEDEX(5), DHL(6), COLISSIMO(7), UPS(8), DOMESTIC(9);
 
         int method;
@@ -108,7 +104,7 @@ public class MFCRequest {
         }
     }
 
-    public enum SUBSTATUS {
+    private enum SUBSTATUS {
         NA(0), SECONDHAND(1), SEALED(2), STORE(3);
 
         int method;
@@ -122,14 +118,8 @@ public class MFCRequest {
         }
     }
 
-    private MFCRequest() {
+    private MFCRequest(Context context) {
         INSTANCE = this;
-        throw new IllegalStateException("Unavailable contructor. Use MFCRequest(Context) constructor.");
-    }
-
-    private MFCRequest(Context mContext) {
-        INSTANCE = this;
-        this.mContext = mContext.getApplicationContext();
 
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         // set your desired log level
@@ -142,8 +132,8 @@ public class MFCRequest {
                 .followRedirects(false);
         client = builder.build();
 
-        standardConverterFactory = new DynamicJsonConverterFactory();
-        galleryConverterFactory = new GalleryJsonConverterFactory();
+        DynamicJsonConverterFactory standardConverterFactory = new DynamicJsonConverterFactory();
+        GalleryJsonConverterFactory galleryConverterFactory = new GalleryJsonConverterFactory();
 
         restAdapter = new Retrofit.Builder()
                 .addConverterFactory(standardConverterFactory)
@@ -160,7 +150,7 @@ public class MFCRequest {
         connectAdapter = new Retrofit.Builder()
                 .baseUrl(LOGIN)
                 .client(client.newBuilder().cookieJar(new JavaNetCookieJar(new CookieManager(
-                        new PersistentCookieStore(mContext),
+                        new PersistentCookieStore(context),
                         CookiePolicy.ACCEPT_ALL))).build())
                 //.setEndpoint(poe)
                 .build();
@@ -177,7 +167,7 @@ public class MFCRequest {
 
     public static MFCRequest getInstance() {
         if (INSTANCE == null) {
-            throw new IllegalStateException("Library must me initialized by calling initialize().");
+            throw new IllegalStateException("Library must be initialized by calling initialize().");
         }
         return INSTANCE;
     }
@@ -217,14 +207,14 @@ public class MFCRequest {
      * @param password the user password
      * @param callback calls success true if connection succeed, calls success false if everything went ok but connexion failed, calls failure otherwise
      */
-    public void connect(String username, String password, final MFCCallback<Boolean> callback) {
+    public void connect(String username, String password, final Context context, final MFCCallback<Boolean> callback) {
         Call<ResponseBody> responseCall = connectAdapter.create(ConnexionService.class).connectUser(username, password, 1, "signin", "http://myfigurecollection.net/");
         responseCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful() || response.code() == 302) {
                     //Request went well, but MFC should return a HTTP 302 status if connection succeeded
-                    callback.success(checkCookies(mContext));
+                    callback.success(checkCookies(context));
                 } else {
                     callback.success(false);
                 }
@@ -248,7 +238,8 @@ public class MFCRequest {
         callback.success(persistentCookieStore.removeAll());
     }
 
-    public boolean checkCookies(Context context) {
+    private boolean checkCookies(Context context) {
+        List<HttpCookie> cookies;
         try {
             PersistentCookieStore persistentCookieStore = new PersistentCookieStore(context);
             cookies = persistentCookieStore.get(new URI("https://myfigurecollection.net/"));
@@ -350,7 +341,6 @@ public class MFCRequest {
             callback.success(MANAGECOLLECTION.NOTCONNECTED);
         }
     }
-
 
     public interface MFCCallback<T> {
         void success(T t);
