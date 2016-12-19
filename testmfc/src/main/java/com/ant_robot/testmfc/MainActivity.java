@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void testConnect() {
 
-        MFCRequest.getInstance().connect("spawn150", "pul78lce", new MFCRequest.MFCCallback<Boolean>() {
+        MFCRequest.getInstance().connect("spawn150", "pul78lce", this, new MFCRequest.MFCCallback<Boolean>() {
             @Override
             public void success(Boolean aBoolean) {
                 Log.d(TAG, "Loging completed with " + (aBoolean ? "True value" : "False value"));
