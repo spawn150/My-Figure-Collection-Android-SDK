@@ -177,7 +177,7 @@ public class MFCRequest {
 
     public static MFCRequest getInstance() {
         if (INSTANCE == null) {
-            throw new IllegalStateException("Library must me initialized before use it.");
+            throw new IllegalStateException("Library must me initialized by calling initialize().");
         }
         return INSTANCE;
     }
