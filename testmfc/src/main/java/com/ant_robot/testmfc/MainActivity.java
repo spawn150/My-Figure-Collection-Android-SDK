@@ -8,6 +8,8 @@ import android.view.MenuItem;
 
 import com.ant_robot.mfc.api.pojo.ItemList;
 import com.ant_robot.mfc.api.pojo.PictureGallery;
+import com.ant_robot.mfc.api.pojo.User;
+import com.ant_robot.mfc.api.pojo.UserProfile;
 import com.ant_robot.mfc.api.request.MFCRequest;
 
 import retrofit2.Call;
@@ -27,10 +29,29 @@ public class MainActivity extends AppCompatActivity {
         MFCRequest.initialize(this);
 
         //testConnect();
+        testUserProfile();
         //testOrderedCollection();
         //testOwnedCollection();
-        testWishedCollection();
-        //testGallery();
+        //testWishedCollection();
+        //testGalleryByItem();
+        //testGalleryByUser();
+    }
+
+    private void testUserProfile() {
+        Call<UserProfile> call = MFCRequest.getInstance().getUserService().getUser("spawn150");
+        call.enqueue(new Callback<UserProfile>() {
+            @Override
+            public void onResponse(Call<UserProfile> call, Response<UserProfile> response) {
+                UserProfile profile = response.body();
+                Log.d(TAG, "Login Data [Name]: " + profile.getUser().getName());
+                Log.d(TAG, "Login Data [Pic ]: " + profile.getUser().getPicture());
+            }
+
+            @Override
+            public void onFailure(Call<UserProfile> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
     }
 
     private void testConnect() {
@@ -38,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         MFCRequest.getInstance().connect("spawn150", "pul78lce", new MFCRequest.MFCCallback<Boolean>() {
             @Override
             public void success(Boolean aBoolean) {
-                Log.d(TAG, "Loging completed with " + (aBoolean ? "Success" : "Failure"));
+                Log.d(TAG, "Loging completed with " + (aBoolean ? "True value" : "False value"));
             }
 
             @Override
@@ -96,10 +117,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    private void testGalleryByItem() {
 
-    private void testGallery() {
+        Call<PictureGallery> call = MFCRequest.getInstance().getGalleryService().getGalleryForItem("176557", 0);
+        call.enqueue(new Callback<PictureGallery>() {
+            @Override
+            public void onResponse(Call<PictureGallery> call, Response<PictureGallery> response) {
+                Log.d(TAG, "Items size: "+response.body().getGallery().getNumPictures());
+            }
 
-        Call<PictureGallery> call = MFCRequest.getInstance().getGalleryService().getGalleryForUser("spawn150", 1);
+            @Override
+            public void onFailure(Call<PictureGallery> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
+
+    }
+
+    private void testGalleryByUser() {
+
+        Call<PictureGallery> call = MFCRequest.getInstance().getGalleryService().getGalleryForUser("climbatize", 0);
         call.enqueue(new Callback<PictureGallery>() {
             @Override
             public void onResponse(Call<PictureGallery> call, Response<PictureGallery> response) {
