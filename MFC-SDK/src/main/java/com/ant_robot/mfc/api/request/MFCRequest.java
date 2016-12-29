@@ -6,6 +6,7 @@ import com.ant_robot.mfc.api.pojo.AlterItem;
 import com.ant_robot.mfc.api.request.cookie.PersistentCookieStore;
 import com.ant_robot.mfc.api.request.json.DynamicJsonConverterFactory;
 import com.ant_robot.mfc.api.request.json.GalleryJsonConverterFactory;
+import com.ant_robot.mfc.api.request.service.BestPicturesService;
 import com.ant_robot.mfc.api.request.service.CollectionService;
 import com.ant_robot.mfc.api.request.service.ConnexionService;
 import com.ant_robot.mfc.api.request.service.GalleryService;
@@ -190,6 +191,10 @@ public class MFCRequest {
 
     public GalleryService getGalleryService() {
         return galleryAdapter.create(GalleryService.class);
+    }
+
+    public BestPicturesService getBestPicturesService() {
+        return galleryAdapter.create(BestPicturesService.class);
     }
 
     public SearchService getSearchService() {

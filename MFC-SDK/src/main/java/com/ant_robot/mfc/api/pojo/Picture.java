@@ -18,6 +18,8 @@ public class Picture implements Parcelable {
     @Expose
     private String src;
     @Expose
+    private String thumbnail;
+    @Expose
     private String full;
     @Expose
     private String medium;
@@ -93,6 +95,10 @@ public class Picture implements Parcelable {
     public Picture withFull(String full) {
         this.full = full;
         return this;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
     }
 
     /**
@@ -273,7 +279,7 @@ public class Picture implements Parcelable {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(id).append(src).append(full).append(medium).append(author).append(date).append(category).append(resolution).append(size).append(title).append(nsfw).append(extension).toHashCode();
+        return new HashCodeBuilder().append(id).append(src).append(thumbnail).append(full).append(medium).append(author).append(date).append(category).append(resolution).append(size).append(title).append(nsfw).append(extension).toHashCode();
     }
 
     @Override
@@ -285,7 +291,7 @@ public class Picture implements Parcelable {
             return false;
         }
         Picture rhs = ((Picture) other);
-        return new EqualsBuilder().append(id, rhs.id).append(src, rhs.src).append(full, rhs.full).append(medium, rhs.medium).append(author, rhs.author).append(date, rhs.date).append(category, rhs.category).append(resolution, rhs.resolution).append(size, rhs.size).append(title, rhs.title).append(nsfw, rhs.nsfw).append(extension, rhs.extension).isEquals();
+        return new EqualsBuilder().append(id, rhs.id).append(src, rhs.src).append(thumbnail, rhs.thumbnail).append(full, rhs.full).append(medium, rhs.medium).append(author, rhs.author).append(date, rhs.date).append(category, rhs.category).append(resolution, rhs.resolution).append(size, rhs.size).append(title, rhs.title).append(nsfw, rhs.nsfw).append(extension, rhs.extension).isEquals();
     }
 
     @Override
@@ -297,6 +303,7 @@ public class Picture implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(src);
+        dest.writeString(thumbnail);
         dest.writeString(full);
         dest.writeString(medium);
         dest.writeString(author);
@@ -328,6 +335,7 @@ public class Picture implements Parcelable {
     public Picture(Parcel pc) {
         id = pc.readString();
         src = pc.readString();
+        thumbnail = pc.readString();
         full = pc.readString();
         medium = pc.readString();
         author = pc.readString();

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.ant_robot.mfc.api.pojo.BestPictureGallery;
 import com.ant_robot.mfc.api.pojo.ItemList;
 import com.ant_robot.mfc.api.pojo.PictureGallery;
 import com.ant_robot.mfc.api.pojo.User;
@@ -29,12 +30,31 @@ public class MainActivity extends AppCompatActivity {
         MFCRequest.initialize(this);
 
         //testConnect();
-        testUserProfile();
+        //testUserProfile();
         //testOrderedCollection();
         //testOwnedCollection();
         //testWishedCollection();
         //testGalleryByItem();
         //testGalleryByUser();
+        testBestPictures();
+    }
+
+    private void testBestPictures() {
+
+        Call<BestPictureGallery> call = MFCRequest.getInstance().getBestPicturesService().getPicturesOfTheDay(0);
+        call.enqueue(new Callback<BestPictureGallery>() {
+            @Override
+            public void onResponse(Call<BestPictureGallery> call, Response<BestPictureGallery> response) {
+                Log.d(TAG, "Items size: "+response.body().getGallery().getCount());
+                Log.d(TAG, "Items: "+response.body().getGallery().getPictures());
+            }
+
+            @Override
+            public void onFailure(Call<BestPictureGallery> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
+
     }
 
     private void testUserProfile() {
