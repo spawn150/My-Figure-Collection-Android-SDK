@@ -23,4 +23,12 @@ public interface GalleryService {
 
     @GET("api.php?mode=gallery&type=json")
     Call<PictureGallery> getGalleryForItem(@Query("item") String itemId, @Query("page") int page);
+
+    @GET("api.php?mode=gallery&type=json")
+    Call<PictureGallery> getLatestPicturesRx(@Query("page") int page);
+
+    @GET("api.php?mode=gallery&type=json")
+    Call<PictureGallery> getLatestPictures(@Query("page") int page);
+
+
 }

@@ -8,7 +8,9 @@ import android.view.MenuItem;
 
 import com.ant_robot.mfc.api.pojo.BestPictureGallery;
 import com.ant_robot.mfc.api.pojo.ItemList;
+import com.ant_robot.mfc.api.pojo.LatestPictureGallery;
 import com.ant_robot.mfc.api.pojo.PictureGallery;
+import com.ant_robot.mfc.api.pojo.PotdPictureGallery;
 import com.ant_robot.mfc.api.pojo.User;
 import com.ant_robot.mfc.api.pojo.UserProfile;
 import com.ant_robot.mfc.api.request.MFCRequest;
@@ -36,21 +38,40 @@ public class MainActivity extends AppCompatActivity {
         //testWishedCollection();
         //testGalleryByItem();
         //testGalleryByUser();
-        testBestPictures();
+        testPotdPictures();
+        testLatestPictures();
     }
 
-    private void testBestPictures() {
+    private void testPotdPictures() {
 
-        Call<BestPictureGallery> call = MFCRequest.getInstance().getBestPicturesService().getPicturesOfTheDay(0);
-        call.enqueue(new Callback<BestPictureGallery>() {
+        Call<PotdPictureGallery> call = MFCRequest.getInstance().getBestPicturesService().getPicturesOfTheDay(0);
+        call.enqueue(new Callback<PotdPictureGallery>() {
             @Override
-            public void onResponse(Call<BestPictureGallery> call, Response<BestPictureGallery> response) {
+            public void onResponse(Call<PotdPictureGallery> call, Response<PotdPictureGallery> response) {
                 Log.d(TAG, "Items size: "+response.body().getGallery().getCount());
                 Log.d(TAG, "Items: "+response.body().getGallery().getPictures());
             }
 
             @Override
-            public void onFailure(Call<BestPictureGallery> call, Throwable t) {
+            public void onFailure(Call<PotdPictureGallery> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
+
+    }
+
+    private void testLatestPictures() {
+
+        Call<PictureGallery> call = MFCRequest.getInstance().getGalleryService().getLatestPictures(0);
+        call.enqueue(new Callback<PictureGallery>() {
+            @Override
+            public void onResponse(Call<PictureGallery> call, Response<PictureGallery> response) {
+                Log.d(TAG, "Items size: "+response.body().getGallery().getNumPictures());
+                Log.d(TAG, "Items: "+response.body().getGallery().getPicture());
+            }
+
+            @Override
+            public void onFailure(Call<PictureGallery> call, Throwable t) {
                 Log.e(TAG, t.getMessage());
             }
         });

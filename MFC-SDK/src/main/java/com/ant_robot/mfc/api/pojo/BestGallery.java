@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PodGallery implements Parcelable {
+public class BestGallery implements Parcelable {
 
     @Expose
     private String count;
@@ -30,7 +30,7 @@ public class PodGallery implements Parcelable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PodGallery that = (PodGallery) o;
+        BestGallery that = (BestGallery) o;
 
         if (count != null ? !count.equals(that.count) : that.count != null) return false;
         return pictures != null ? pictures.equals(that.pictures) : that.pictures == null;
@@ -46,7 +46,7 @@ public class PodGallery implements Parcelable {
 
     @Override
     public String toString() {
-        return "PodGallery{" +
+        return "BestGallery{" +
                 "count='" + count + '\'' +
                 ", pictures=" + pictures +
                 '}';
@@ -63,23 +63,23 @@ public class PodGallery implements Parcelable {
         dest.writeTypedList(this.pictures);
     }
 
-    public PodGallery() {
+    public BestGallery() {
     }
 
-    protected PodGallery(Parcel in) {
+    protected BestGallery(Parcel in) {
         this.count = in.readString();
         this.pictures = in.createTypedArrayList(Picture.CREATOR);
     }
 
-    public static final Creator<PodGallery> CREATOR = new Creator<PodGallery>() {
+    public static final Creator<BestGallery> CREATOR = new Creator<BestGallery>() {
         @Override
-        public PodGallery createFromParcel(Parcel source) {
-            return new PodGallery(source);
+        public BestGallery createFromParcel(Parcel source) {
+            return new BestGallery(source);
         }
 
         @Override
-        public PodGallery[] newArray(int size) {
-            return new PodGallery[size];
+        public BestGallery[] newArray(int size) {
+            return new BestGallery[size];
         }
     };
 }
