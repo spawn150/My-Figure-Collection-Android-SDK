@@ -31,15 +31,15 @@ public class MainActivity extends AppCompatActivity {
 
         MFCRequest.initialize(this);
 
-        //testConnect();
+        testConnect();
         //testUserProfile();
         //testOrderedCollection();
         //testOwnedCollection();
         //testWishedCollection();
         //testGalleryByItem();
         //testGalleryByUser();
-        testPotdPictures();
-        testLatestPictures();
+        //testPotdPictures();
+        //testLatestPictures();
     }
 
     private void testPotdPictures() {
@@ -97,7 +97,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void testConnect() {
 
-        MFCRequest.getInstance().connect("spawn150", "pul78lce", this, new MFCRequest.MFCCallback<Boolean>() {
+        String username = "spawn_test";
+        String password = "pul78lce";
+
+        MFCRequest.getInstance().connect(username, password, this, new MFCRequest.MFCCallback<Boolean>() {
             @Override
             public void success(Boolean aBoolean) {
                 Log.d(TAG, "Loging completed with " + (aBoolean ? "True value" : "False value"));
