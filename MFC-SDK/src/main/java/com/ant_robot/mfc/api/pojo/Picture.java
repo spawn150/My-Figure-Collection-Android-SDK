@@ -34,6 +34,8 @@ public class Picture implements Parcelable {
     @Expose
     private String size;
     @Expose
+    private String hits;
+    @Expose
     private String title;
     @Expose
     private String nsfw;
@@ -216,6 +218,25 @@ public class Picture implements Parcelable {
     }
 
     /**
+     * @return The hits
+     */
+    public String getHits() {
+        return hits;
+    }
+
+    /**
+     * @param hits The hits
+     */
+    public void setHits(String hits) {
+        this.hits = hits;
+    }
+
+    public Picture withHits(String hits) {
+        this.hits = hits;
+        return this;
+    }
+
+    /**
      * @return The title
      */
     public String getTitle() {
@@ -279,7 +300,7 @@ public class Picture implements Parcelable {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(id).append(src).append(thumbnail).append(full).append(medium).append(author).append(date).append(category).append(resolution).append(size).append(title).append(nsfw).append(extension).toHashCode();
+        return new HashCodeBuilder().append(id).append(src).append(thumbnail).append(full).append(medium).append(author).append(date).append(category).append(resolution).append(size).append(hits).append(title).append(nsfw).append(extension).toHashCode();
     }
 
     @Override
@@ -291,7 +312,7 @@ public class Picture implements Parcelable {
             return false;
         }
         Picture rhs = ((Picture) other);
-        return new EqualsBuilder().append(id, rhs.id).append(src, rhs.src).append(thumbnail, rhs.thumbnail).append(full, rhs.full).append(medium, rhs.medium).append(author, rhs.author).append(date, rhs.date).append(category, rhs.category).append(resolution, rhs.resolution).append(size, rhs.size).append(title, rhs.title).append(nsfw, rhs.nsfw).append(extension, rhs.extension).isEquals();
+        return new EqualsBuilder().append(id, rhs.id).append(src, rhs.src).append(thumbnail, rhs.thumbnail).append(full, rhs.full).append(medium, rhs.medium).append(author, rhs.author).append(date, rhs.date).append(category, rhs.category).append(resolution, rhs.resolution).append(size, rhs.size).append(hits, rhs.hits).append(title, rhs.title).append(nsfw, rhs.nsfw).append(extension, rhs.extension).isEquals();
     }
 
     @Override
@@ -311,6 +332,7 @@ public class Picture implements Parcelable {
         dest.writeParcelable(category, flags);
         dest.writeParcelable(resolution, flags);
         dest.writeString(size);
+        dest.writeString(hits);
         dest.writeString(title);
         dest.writeString(nsfw);
         dest.writeString(extension);
@@ -343,6 +365,7 @@ public class Picture implements Parcelable {
         category = pc.readParcelable(Category.class.getClassLoader());
         resolution = pc.readParcelable(Resolution.class.getClassLoader());
         size = pc.readString();
+        hits = pc.readString();
         title = pc.readString();
         nsfw = pc.readString();
         extension = pc.readString();

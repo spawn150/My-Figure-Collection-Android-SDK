@@ -31,14 +31,14 @@ public class MainActivity extends AppCompatActivity {
 
         MFCRequest.initialize(this);
 
-        testConnect();
+        //testConnect();
         //testUserProfile();
         //testOrderedCollection();
         //testOwnedCollection();
         //testWishedCollection();
         //testGalleryByItem();
         //testGalleryByUser();
-        //testPotdPictures();
+        testPotdPictures();
         //testLatestPictures();
     }
 
